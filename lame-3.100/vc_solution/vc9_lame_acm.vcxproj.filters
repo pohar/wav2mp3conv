@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{233acd3e-0dfe-4ad3-9154-ffe0d8290bb0}</UniqueIdentifier>
+      <Extensions>c;cpp</Extensions>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{4d06ef6c-6a45-4a0c-8a93-586cb05f73fc}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{5e4fe431-fd7d-4b58-a680-219dba370c9d}</UniqueIdentifier>
+      <Extensions>rc</Extensions>
+    </Filter>
+    <Filter Include="Install">
+      <UniqueIdentifier>{7224869b-5d35-40e5-84a5-ca40260e7d6d}</UniqueIdentifier>
+      <Extensions>inf;acm</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\ACM\ACM.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ACM\ACMStream.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ACM\AEncodeProperties.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ACM\DecodeStream.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ACM\main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ACM\LameACM.inf">
+      <Filter>Install</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\ACM\ACM.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ACM\ACMStream.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ACM\adebug.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ACM\AEncodeProperties.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ACM\DecodeStream.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\ACM\acm.rc">
+      <Filter>Resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\ACM\lame.ico">
+      <Filter>Resource</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\ACM\lameACM.def">
+      <Filter>Source</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ACM\readme.txt" />
+    <CustomBuild Include="..\ACM\TODO" />
+  </ItemGroup>
+</Project>
