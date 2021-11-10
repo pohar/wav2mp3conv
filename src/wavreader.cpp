@@ -424,6 +424,8 @@ void WavReader::ParseWavFile2()
     else
     {
         debugm << "file open error:" << filename << "\n";
+#pragma warning(suppress : 4996)
+       char *err=strerror(errno); // Get some info as to why
     }
 }
 

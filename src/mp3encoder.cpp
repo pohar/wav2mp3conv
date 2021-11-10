@@ -13,7 +13,8 @@ MP3Encoder::MP3Encoder(std::string &arg_filename,
                                             numsamples(arg_num_samples),
                                             num_channels(arg_num_channels),
                                             samplerate(arg_sample_rate),
-                                            byte_rate(arg_byte_rate)
+                                            byte_rate(arg_byte_rate),
+                                            bytes_written(0)
 
 {
     Encode();
@@ -32,7 +33,8 @@ MP3Encoder::MP3Encoder(std::string &arg_filename,
                                             numsamples(arg_num_samples),
                                             num_channels(arg_num_channels),
                                             samplerate(arg_sample_rate),
-                                            byte_rate(arg_byte_rate)
+                                            byte_rate(arg_byte_rate),
+                                            bytes_written(0)
 {
     Encode();
 }
@@ -133,10 +135,12 @@ void MP3Encoder::Encode()
     std::ofstream outfile(filename, std::ofstream::binary);
     outfile.write(reinterpret_cast<const char *>(mp3buffer.data()), ret_code_enc);
     debugm << "bytes output to mp3buffer:" << ret_code_enc << "\n";
+    bytes_written += ret_code_enc;
 
     int outputflush = lame_encode_flush(gfp, mp3buffer.data(), buffer_size); // TOTO replace flush with finish
     outfile.write(reinterpret_cast<const char *>(mp3buffer.data()), outputflush);
     debugm << "bytes output to mp3buffer:" << outputflush << "\n";
+    bytes_written += outputflush;
     outfile.close();
 
     lame_close(gfp);

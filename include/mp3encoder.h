@@ -19,6 +19,7 @@ class MP3Encoder
 public:
     MP3Encoder(std::string &, const int *, const int *, int, int, int, int);
     MP3Encoder(std::string &, const float *, const float *, int, int, int, int);
+    auto GetBytesWritten() const { return bytes_written; };
 
 private:
     void Encode();
@@ -34,6 +35,7 @@ private:
     int num_channels;
     int samplerate;
     int byte_rate;
+    int bytes_written;
 
     std::vector<unsigned char> mp3buffer;
 };

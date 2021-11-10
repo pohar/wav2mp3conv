@@ -1,14 +1,14 @@
 #include "wav2mp3.h"
 
-#define MAX_THREADS (1)
+#define MAX_THREADS (6)
 
 using namespace HelperFunctions;
 
 std::mutex g_mutex;
 
-ConversionCoordinator::ConversionCoordinator(std::vector<std::string> &FileList) : WavFileList(FileList)
-{
-}
+ConversionCoordinator::ConversionCoordinator(std::vector<std::string> &FileList) : WavFileList(FileList), 
+files_tried(0), 
+files_success(0) {}
 
 void *ConversionCoordinator::ConvertWavFile(void *args)
 {
@@ -24,6 +24,7 @@ void *ConversionCoordinator::ConvertWavFile(void *args)
     {
         std::string wavfilename = tp.WavFileList.back();
         tp.WavFileList.pop_back();
+        tp.files_tried++;
         guard.unlock();
 
         WavReader wav(wavfilename);
@@ -47,6 +48,10 @@ void *ConversionCoordinator::ConvertWavFile(void *args)
                 const int *leftpcmdata = wav.GetLeftPCMData();
                 const int *rightpcmdata = wav.GetRightPCMData();
                 MP3Encoder mp3enc(mp3filename, leftpcmdata, rightpcmdata, numsamples, wav.GetNumChannels(), wav.GetSampleRate(), wav.GetByteRate());
+                if (mp3enc.GetBytesWritten() > 0)
+                {
+                    tp.files_success++;
+                }
                 break;
             }
             case (wav_header::Audio_Format_IDs::Audio_Format_IEEE):
@@ -54,6 +59,10 @@ void *ConversionCoordinator::ConvertWavFile(void *args)
                 const float *leftieeedata = wav.GetLeftIEEEData();
                 const float *rightieedata = wav.GetRightIEEEData();
                 MP3Encoder mp3enc(mp3filename, leftieeedata, rightieedata, numsamples, wav.GetNumChannels(), wav.GetSampleRate(), wav.GetByteRate());
+                if (mp3enc.GetBytesWritten() > 0)
+                {
+                    tp.files_success++;
+                }
                 break;
             }
             default:
@@ -91,7 +100,7 @@ void ConversionCoordinator::ConvertWavFiles()
 
     for (unsigned int thread_id = 0; thread_id < MAX_THREADS; thread_id++)
     {
-        thread_params tp{thread_id, WavFileList};
+        thread_params tp{thread_id, WavFileList, files_tried, files_success };
         threads.emplace_back();
         auto ret_thread = pthread_create(&threads.back(), NULL, &ConversionCoordinator::ConvertWavFile, (void *)(&tp));
         if (ret_thread)
