@@ -1,3 +1,6 @@
+/*! \file mp3encoder.h
+    \brief Header file of encoding class.
+*/
 #ifndef __MP3ENCODER_H__
 #define __MP3ENCODER_H__
 
@@ -8,12 +11,15 @@
 
 using namespace HelperFunctions;
 
+/// MP3Encoder class
+/** The MP3Encoder class converts the sample data  in the incoming array(s)
+ * to and mp3 file, and saves it to the disk.*/
 class MP3Encoder
 {
     enum Audio_Format_IDs
     {
-        Audio_Format_PCM = 1,
-        Audio_Format_IEEE = 3
+        audio_format_PCM = 1,
+        audio_format_IEEE = 3
     };
 
 public:

@@ -82,10 +82,7 @@
 			"problemMatcher": [
 				"$gcc"
 			],
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
+			"group": "build",
 			"presentation": {
 				"clear": true
 			},
@@ -115,7 +112,10 @@
 			"presentation": {
 				"clear": true
 			},
-			"group": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
 			"detail": "compiler: /usr/bin/clang++-10"
 		}
 	]

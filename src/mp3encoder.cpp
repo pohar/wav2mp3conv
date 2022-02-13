@@ -1,5 +1,11 @@
+/*! \file mp3encoder.cpp
+    \brief Source file of encoding class.
+*/
 #include "mp3encoder.h"
 
+/// Constructor of MP3Encoder with PCM input
+/** Constructor of MP3Encoder with PCM input
+ * It starts encoding automatically. */
 MP3Encoder::MP3Encoder(std::string &arg_filename,
                        const int *arg_buffer_l,
                        const int *arg_buffer_r,
@@ -9,7 +15,7 @@ MP3Encoder::MP3Encoder(std::string &arg_filename,
                        int arg_byte_rate) : filename(arg_filename),
                                             buffer_l(arg_buffer_l),
                                             buffer_r(arg_buffer_r),
-                                            audio_format(Audio_Format_IDs::Audio_Format_PCM),
+                                            audio_format(Audio_Format_IDs::audio_format_PCM),
                                             numsamples(arg_num_samples),
                                             num_channels(arg_num_channels),
                                             samplerate(arg_sample_rate),
@@ -20,6 +26,9 @@ MP3Encoder::MP3Encoder(std::string &arg_filename,
     Encode();
 }
 
+/// Constructor of MP3Encoder with IEEE input
+/** Constructor of MP3Encoder with IEEE input
+ * It starts encoding automatically. */
 MP3Encoder::MP3Encoder(std::string &arg_filename,
                        const float *arg_buffer_ieee_l,
                        const float *arg_buffer_ieee_r,
@@ -29,7 +38,7 @@ MP3Encoder::MP3Encoder(std::string &arg_filename,
                        int arg_byte_rate) : filename(arg_filename),
                                             buffer_ieee_l(arg_buffer_ieee_l),
                                             buffer_ieee_r(arg_buffer_ieee_r),
-                                            audio_format(Audio_Format_IDs::Audio_Format_IEEE),
+                                            audio_format(Audio_Format_IDs::audio_format_IEEE),
                                             numsamples(arg_num_samples),
                                             num_channels(arg_num_channels),
                                             samplerate(arg_sample_rate),
@@ -39,6 +48,12 @@ MP3Encoder::MP3Encoder(std::string &arg_filename,
     Encode();
 }
 
+/// The function that actually does MP3 encoding
+/** MP3 encoding function.
+ * The size of encoding buffer is determined by Lame documentation.
+ * After initalizing the Lame library and the parameters are set,
+ * the encoding happens (depending on the audio format and the number of channels).
+ * If the encoding was successful, the mp3 file is written. */
 void MP3Encoder::Encode()
 {
     buffer_size = (unsigned int)(1.25 * numsamples + 7200); // method taken from Lame documentation
@@ -64,7 +79,7 @@ void MP3Encoder::Encode()
     int ret_code_enc = 0;
     switch (audio_format)
     {
-    case Audio_Format_IDs::Audio_Format_PCM:
+    case Audio_Format_IDs::audio_format_PCM:
     {
         try
         {
@@ -87,13 +102,13 @@ void MP3Encoder::Encode()
         catch (...)
         {
             std::cerr << std::endl
-                      << "Some exception caught " << std::endl
+                      << "Exception caught" << std::endl
                       << std::flush;
             return;
         }
         break;
     }
-    case Audio_Format_IDs::Audio_Format_IEEE:
+    case Audio_Format_IDs::audio_format_IEEE:
     {
         try
         {
@@ -116,7 +131,7 @@ void MP3Encoder::Encode()
         catch (...)
         {
             std::cerr << std::endl
-                      << "Some exception caught " << std::endl
+                      << "Exception caught" << std::endl
                       << std::flush;
             return;
         }
@@ -137,9 +152,9 @@ void MP3Encoder::Encode()
     debugm << "bytes output to mp3buffer:" << ret_code_enc << "\n";
     bytes_written += ret_code_enc;
 
-    int outputflush = lame_encode_flush(gfp, mp3buffer.data(), buffer_size); // TOTO replace flush with finish
+    int outputflush = lame_encode_flush(gfp, mp3buffer.data(), buffer_size); // TODO replace flush with finish
     outfile.write(reinterpret_cast<const char *>(mp3buffer.data()), outputflush);
-    debugm << "bytes output to mp3buffer:" << outputflush << "\n";
+    debugm << "more bytes output to mp3buffer:" << outputflush << "\n";
     bytes_written += outputflush;
     outfile.close();
 

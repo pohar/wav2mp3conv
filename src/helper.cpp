@@ -1,17 +1,27 @@
+/*! \file helper.cpp
+    \brief Source file containing helper functions.
+*/
 #include "helperf.h"
+
 namespace HelperFunctions
 {
-    unsigned is_little_endian(void)
+    /// The function for deciding endianness.
+    /** The function for deciding endianness of the architecture.
+     * It checks if the LSB is in the very first byte. */
+    unsigned IsLittleEndian(void)
     {
         const union
         {
             unsigned u;
             unsigned char c[4];
-        } one = {1}; /* don't use static : performance detrimental  */
+        } one = {1};
         return one.c[0];
     }
 
-    class exc_handler : public std::runtime_error // exception_handler
+    /// Exception handler class.
+    /** Exception handler class.
+     *  */
+    class ExceptionHandler : public std::runtime_error
     {
     public:
         using std::runtime_error::runtime_error;
@@ -27,7 +37,7 @@ namespace HelperFunctions
             unsigned char c[4];
         } c2f = {0};
 
-        if (is_little_endian())
+        if (IsLittleEndian())
         {
             file >> c2f.c[0];
             file >> c2f.c[1];
@@ -50,7 +60,7 @@ namespace HelperFunctions
     {
         unsigned int ret = 0;
 
-        if (is_little_endian())
+        if (IsLittleEndian())
         {
             char c[4];
             file.read(c, 4);
@@ -68,7 +78,6 @@ namespace HelperFunctions
             {
                 file >> c;
                 ret = (ret << 8) + c;
-                debugm << "readint32: " << int(c) << ":" << int(ret) << "\n";
             }
         }
         return ret;
@@ -78,7 +87,7 @@ namespace HelperFunctions
     {
         unsigned int ret = 0;
 
-        if (is_little_endian())
+        if (IsLittleEndian())
         {
             char c[3];
             file.read(c, 3);
@@ -96,7 +105,6 @@ namespace HelperFunctions
             {
                 file >> c;
                 ret = (ret << 8) + c;
-                debugm << "readint24: " << int(c) << ":" << int(ret) << "\n";
             }
         }
 
@@ -107,7 +115,7 @@ namespace HelperFunctions
     {
         unsigned int ret = 0;
 
-        if (is_little_endian())
+        if (IsLittleEndian())
         {
             char c[2];
             file.read(c, 2);
@@ -125,7 +133,6 @@ namespace HelperFunctions
             {
                 file >> c;
                 ret = (ret << 8) + c;
-                debugm << "readint16:" << int(c) << ":" << int(ret) << "\n";
             }
         }
         return ret;
@@ -148,16 +155,15 @@ namespace HelperFunctions
 
         if (std::string::npos == dotpos)
         {
-            throw exc_handler("Filename without extension\n");
+            throw ExceptionHandler("Filename without extension\n");
         }
 
         outputfilename = inputfilename.substr(0, dotpos + 1); // +1 to include the dot itself
         outputfilename.append(newextension);
-        debugm << "mp3filename:" << outputfilename << "\n";
         return outputfilename;
     }
 
-    void ReadSamples_IEEE(unsigned int numsamples, const short numchannels, std::ifstream &file_handle, std::vector<float> &lbuffer, std::vector<float> &rbuffer)
+    void ReadSamples_IEEE(unsigned int numsamples, const short numchannels, std::ifstream &file_handle, std::vector<float> &lbuffer)
     {
         for (unsigned int sample = 0; sample < numsamples; sample++)
         {
@@ -172,7 +178,7 @@ namespace HelperFunctions
         }
     }
 
-    void ReadSamples_PCM(unsigned int numsamples, short numchannels, short num_bits, std::ifstream &file_handle, std::vector<int> &lbuffer, std::vector<int> &rbuffer)
+    void ReadSamples_PCM(unsigned int numsamples, short numchannels, short num_bits, std::ifstream &file_handle, std::vector<int> &lbuffer)
     {
         for (unsigned int sample = 0; sample < numsamples; sample++)
         {
@@ -180,7 +186,7 @@ namespace HelperFunctions
             switch (num_bits)
             {
             case 8:
-                s = (int)ReadChar8(file_handle) << 23; // TODO it shall be 24 bits, but it makes the output distorted. Somehoe 23 works fine.
+                s = (int)ReadChar8(file_handle) << 23; // TODO it shall be 24 bits, but it makes the output distorted. Somehow 23 works fine.
                 lbuffer.push_back(s);
                 if (2 == numchannels)
                 {
@@ -217,7 +223,7 @@ namespace HelperFunctions
                 break;
             default:
             {
-                throw exc_handler("Invalid number of bits during reading samples.\n");
+                throw ExceptionHandler("Invalid number of bits during reading samples.\n");
             }
             }
         }
