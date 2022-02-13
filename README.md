@@ -33,7 +33,7 @@ There are still some small TODO comments in the code, which could be examined la
 
 ## Unit testing
 Using the project UnitTest_Wav2mp3 in Visual Studio. Check the "Test Explorer" view in VS. Classes have separate testcases. 
-Some of them can result in an exception (eg: TestBadNumSamples -> Exception Code: C0000005).
+Some of them can result in an exception (eg: TestBadNumSamples -> Exception Code: C0000005). The wav files for unit testing were not uploaded to git.
 
 ## Valgrind
 Valgrind tests convert small and big wav files. 
