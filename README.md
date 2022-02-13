@@ -39,6 +39,7 @@ Some of them can result in an exception (eg: TestBadNumSamples -> Exception Code
 Valgrind tests convert small and big wav files. 
 Memory leaks were not detected: 
 > "All heap blocks were freed -- no leaks are possible"
+
 The following warning occures with big files:
 > ==6757== Warning: set address range perms: large range
 
