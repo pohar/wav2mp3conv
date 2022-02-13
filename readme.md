@@ -1,11 +1,11 @@
-Wav2Mp3 converter by HELF Szilárd
+#Wav2Mp3 converter by HELF Szilárd
 
-Development environment:
-HW:
+##Development environment
+###HW
 Intel Core i5-10400F CPU @ 2.90GHz 6 Cores, 12 Logical processors
 Installed Physical Memory (RAM)	16,0 GB
 
-SW (as of 2022.02.12.):
+###SW
 Microsoft Windows 10 Pro
 Visual Studio Code 1.64.2 
 Windows SDK v142
@@ -28,15 +28,16 @@ Compiler:
 
 There are still some small TODO comments in the code, which could be examined later.
 
-Unit testing:
+##Unit testing
 Using the project UnitTest_Wav2mp3 in Visual Studio. Check the "Test Explorer" view in VS. Classes have separate testcases. 
 Some of them can result in an exception (eg: TestBadNumSamples -> Exception Code: C0000005).
 
-Valgrind:
+##Valgrind
 Valgrind tests convert small and big wav files. 
 Memory leaks were not detected: "All heap blocks were freed -- no leaks are possible"
 The following warning occures with big files:
 ==6757== Warning: set address range perms: large range
 
-Doxygen documentation is available.
+##Doxygen
+The documentation is available in the html folder.
 
