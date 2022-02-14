@@ -366,3 +366,6 @@ FodyWeavers.xsd
 *.wav
 *.mp3
 
+UnitTest_Wav2mp3.dll
+UnitTest_Wav2mp3.exp
+UnitTest_Wav2mp3.lib
